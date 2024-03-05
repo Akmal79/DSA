@@ -1,103 +1,185 @@
-#include <stdio.h>
-#include <stdlib.h>
+PUSH OPERATION
+#include<stdio.h>
+#include<conio.h>
+void push(int);
+struct Node
+{
+int data;
+struct Node *next;
+}*top = NULL;
+void push(int);
+int main()
+{
+int value;
+printf("Stack using Linked List ::\n");
+printf("Enter the value to be insert: ");
+scanf("%d", &value);
+push(value);
+display();
+return 0;
 
-struct Node {
-    int data;
-    struct Node* next;
-};
-
-struct Stack {
-    struct Node* top;
-};
-
-struct Stack* createStack() {
-    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
-    stack->top = NULL;
-    return stack;
 }
-
-int is_empty(struct Stack* stack) {
-    return stack->top == NULL;
+void push(int value)
+{
+struct Node *newNode;
+newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+if(top == NULL){
+newNode->next = NULL;
 }
-
-void push(struct Stack* stack, int item) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = item;
-    newNode->next = stack->top;
-    stack->top = newNode;
-    printf("Pushed %d to the stack\n", item);
+else{
+newNode->next = top;
 }
+top = newNode;
+printf("\nInsertion is Success!!!\n");
 
-int pop(struct Stack* stack) {
-    if (is_empty(stack)) {
-        printf("Stack Underflow: Cannot pop, the stack is empty.\n");
-        return -1;
-    } else {
-        struct Node* temp = stack->top;
-        int item = temp->data;
-        stack->top = temp->next;
-        free(temp);
-        printf("Popped %d from the stack\n", item);
-        return item;
-    }
 }
-
-void display(struct Stack* stack) {
-    if (is_empty(stack)) {
-        printf("Stack is empty.\n");
-    } else {
-        printf("Stack elements:\n");
-        struct Node* current = stack->top;
-        while (current != NULL) {
-            printf("%d\n", current->data);
-            current = current->next;
-        }
-    }
+CREATE A STACK OF ELEMENTS
+#include<stdio.h>
+#include<conio.h>
+void push(int);
+int main()
+{
+int value,n;
+printf("Stack using Linked List ::\n");
+printf(“Input number of elements”)
+scanf("%d",&n);
+printf("Creating a stack with %d elements: \n",n);
+printf("Enter the values to insert:\n”);
+for(int i=1;i<=n;i++)
+{
+scanf("%d",&value);
+push(value);
 }
+display();
+return 0;
+}
+void push(int value)
+{
+struct Node *newNode;
+newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+if(top == NULL)
+newNode->next = NULL;
+else
+newNode->next = top;
+top = newNode;
+printf("\nInsertion is Success!!!\n");
+}
+DISPLAY OPERATION
 
-int main() {
-    struct Stack* myStack = createStack();
-    int choice, item;
+#include<stdio.h>
+#include<conio.h>
+struct Node
+{
+int data;
+struct Node *next;
+}*top = NULL;
+void push(int);
+void display();
+int main()
+{
+printf("Stack using Linked List ::\n");
+printf(“Input number of elements”)
+scanf("%d",&n);
+printf("Creating a stack with %d elements: \n",n);
+printf("Enter the values to insert:\n”);
+for(int i=1;i<=n;i++)
+{
+scanf("%d",&value);
+push(value);
+}
+display();
+}
+void push(int value)
+{
+struct Node *newNode;
+newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+if(top == NULL)
+newNode->next = NULL;
+else
+newNode->next = top;
+top = newNode;
+printf("\nInsertion is Success!!!\n");
 
-    do {
-        printf("\n1. Push\n2. Pop\n3. Display\n4. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
+}
+void display()
+{
+if(top == NULL)
+printf("\nStack is Empty!!!\n");
+else{
+printf("Displaying stack elements:\n");
+struct Node *temp = top;
+while(temp != NULL){
+printf("%d",temp->data);
+temp = temp -> next;
+}
+}
+}
+POP OPERATION
+#include<stdio.h>
+#include<conio.h>
+struct Node
+{
+int data;
+struct Node *next;
+}*top = NULL;
+void push(int);
+void display();
+void pop();
+int main()
+{
+int value,n;
+printf("Stack using Linked List ::\n");
+printf(“Input number of elements”)
+scanf("%d",&n);
+printf("Creating a stack with %d elements: \n",n);
 
-        switch (choice) {
-            case 1:
-                printf("Enter the element to push: ");
-                scanf("%d", &item);
-                push(myStack, item);
-                break;
+printf("Enter the values to insert:\n”);
+for(int i=1;i<=n;i++)
+{
+scanf("%d",&value);
+push(value);
+}
+display();
+pop();
+display();
+}
+void push(int value)
+{
+struct Node *newNode;
+newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+if(top == NULL)
+newNode->next = NULL;
+else
+newNode->next = top;
+top = newNode;
+printf("Insertion is Success!!!\n");
+}
+void display()
+{
+if(top == NULL)
+printf("Stack is Empty!!!\n");
+else{
+printf("Displaying stack elements:\n");
+struct Node *temp = top;
+while(temp != NULL){
+printf("%d \n",temp->data);
+temp = temp -> next;
+}
+}
+}
+void pop()
+{
 
-            case 2:
-                pop(myStack);
-                break;
-
-            case 3:
-                display(myStack);
-                break;
-
-            case 4:
-                printf("Exiting the program.\n");
-                break;
-
-            default:
-                printf("Invalid choice. Please enter a valid option.\n");
-        }
-    } while (choice != 4);
-
-    // Free the memory used by the linked list nodes
-    struct Node* current = myStack->top;
-    while (current != NULL) {
-        struct Node* nextNode = current->next;
-        free(current);
-        current = nextNode;
-    }
-
-    // Free the memory used by the stack structure
-    free(myStack);
-
-    return 0;
+if(top == NULL)
+printf("Stack is Empty!!!\n");
+else{
+struct Node *temp = top;
+printf("Deleted element: %d \n",temp->data);
+top = temp->next;
+free(temp);
+}
 }
