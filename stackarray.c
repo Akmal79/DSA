@@ -1,98 +1,164 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#define MAX_SIZE 5
-
-struct Stack {
-    int capacity;
-    int* array;
-    int top;
-};
-
-struct Stack* createStack(int capacity) {
-    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
-    stack->capacity = capacity;
-    stack->array = (int*)malloc(stack->capacity * sizeof(int));
-    stack->top = -1;
-    return stack;
+PUSH OPERATION
+#include<stdio.h>
+#include<conio.h>
+#define SIZE 10
+void push(int);
+int a[SIZE], top = -1;
+int main()
+{
+int value;
+printf("Stack using array implementation ::\n");
+printf("Enter the value to be insert: ");
+scanf("%d",&value);
+push(value);
+return 0;
 }
-
-int is_empty(struct Stack* stack) {
-    return stack->top == -1;
+void push(int value)
+{
+if(top == SIZE-1)
+printf("\nStack is Full!!! Insertion is not possible!!!");
+else
+{
+top++;
+a[top] = value;
+printf("\nInsertion success!!!");
 }
-
-int is_full(struct Stack* stack) {
-    return stack->top == stack->capacity - 1;
 }
+CREATE A STACK OF ELEMENTS
+#include<stdio.h>
+#include<conio.h>
+#define SIZE 10
+void push(int);
+int a[SIZE], top = -1;
 
-void push(struct Stack* stack, int item) {
-    if (is_full(stack)) {
-        printf("Stack Overflow: Cannot push, the stack is full.\n");
-    } else {
-        stack->top++;
-        stack->array[stack->top] = item;
-        printf("Pushed %d to the stack\n", item);
-    }
+int main()
+{
+int value,n;
+printf("Stack using array implementation :\n");
+printf("Input number of elements: ");
+scanf("%d",&n);
+printf("Creating a stack with %d elements:\n",n);
+printf("Enter the values to insert:\n");
+for(int i=1;i<=n;i++)
+{
+scanf("%d",&value);
+push(value);
 }
-
-int pop(struct Stack* stack) {
-    if (is_empty(stack)) {
-        printf("Stack Underflow: Cannot pop, the stack is empty.\n");
-        return -1;
-    } else {
-        int item = stack->array[stack->top];
-        stack->top--;
-        printf("Popped %d from the stack\n", item);
-        return item;
-    }
+return 0;
 }
-
-void display(struct Stack* stack) {
-    if (is_empty(stack)) {
-        printf("Stack is empty.\n");
-    } else {
-        printf("Stack elements:\n");
-        for (int i = stack->top; i >= 0; i--) {
-            printf("%d\n", stack->array[i]);
-        }
-    }
+void push(int value)
+{
+if(top == SIZE-1)
+printf("\nStack is Full!!! Insertion is not possible!!!\n");
+else
+{
+top++;
+a[top] = value;
+printf("\nInsertion success!!!\n");
 }
+}
+DISPLAY OPERATION
+#include<stdio.h>
+#include<conio.h>
+#define SIZE 10
+void push(int);
+void display();
+int a[SIZE], top = -1;
+int main()
+{
+int value,n;
 
-int main() {
-    struct Stack* myStack = createStack(MAX_SIZE);
-    int choice, item;
+printf("Stack using array implementation :\n");
+printf("Create a stack of 'n' elements: \n");
+scanf("%d",&n);
+printf("Enter the %d value to insert:\n",n);
+for(int i=1;i<=n;i++)
+{
+scanf("%d",&value);
+push(value);
+}
+display();
+return 0;
+}
+void push(int value)
+{
+if(top == SIZE-1)
+printf("\nStack is Full!!! Insertion is not possible!!!\n");
+else
+{
+top++;
+a[top] = value;
+printf("\nInsertion success!!!\n");
+}
+}
+void display()
+{
+if(top == -1)
+printf("\nStack is Empty!!!");
+else
+{
+int i;
+printf("Displaying stack elements:\n");
+for(i=top; i>=0; i--)
+printf("%d\n",a[i]);
+}
+}
+POP OPERATION
+#include<stdio.h>
+#include<conio.h>
 
-    do {
-        printf("\n1. Push\n2. Pop\n3. Display\n4. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
+#define SIZE 10
+void push(int);
+int a[SIZE], top = -1;
+int main()
+{
+int value,n;
+printf("Stack using array implementation:\n");
+printf(“Input number of elements”)
+scanf("%d",&n);
+printf("Creating a stack with %d elements: \n",n);
+printf("Enter the values to insert:\n”);
+for(int i=1;i<=n;i++)
+{
+scanf("%d",&value);
+push(value);
+}
+display();
+pop();
+display();
+return 0;
+}
+void push(int value)
+{
+if(top == SIZE-1)
+printf("\nStack is Full!!! Insertion is not possible!!!");
+else
+{
+top++;
+a[top] = value;
+printf("\nInsertion success!!!");
+}
+}
+void pop()
+{
+if(top == -1)
+printf("\nStack is Empty!!! Deletion is not possible!!!");
 
-        switch (choice) {
-            case 1:
-                printf("Enter the element to push: ");
-                scanf("%d", &item);
-                push(myStack, item);
-                break;
-
-            case 2:
-                pop(myStack);
-                break;
-
-            case 3:
-                display(myStack);
-                break;
-
-            case 4:
-                printf("Exiting the program.\n");
-                break;
-
-            default:
-                printf("Invalid choice. Please enter a valid option.\n");
-        }
-    } while (choice != 4);
-
-    free(myStack->array);
-    free(myStack);
-
-    return 0;
+else
+{
+printf("\nDeleted : %d", a[top]);
+top--;
+}
+}
+void display()
+{
+if(top == -1)
+printf("\nStack is Empty!!!");
+else
+{
+int i;
+printf("Displaying stack elements:\n");
+for(i=top; i>=0; i--)
+printf("%d\n",a[i]);
+}
 }
