@@ -1,97 +1,75 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Node structure for an individual vertex in the adjacency list
+// Structure to represent a node in the linked list
 struct Node {
-    int vertex;
+    int data;
     struct Node* next;
 };
 
-// Structure for the entire graph
+// Structure to represent the adjacency list
 struct Graph {
-    int vertices;
-    struct Node** adjacencyList;
+    int V; // Number of vertices
+    struct Node* array[100]; // Array of linked lists (adjacency list)
 };
 
-// Function to create a new node for a vertex
-struct Node* createNode(int vertex) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->vertex = vertex;
-    newNode->next = NULL;
-    return newNode;
+// Function to create a new node
+struct Node* newNode(int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = NULL;
+    return new_node;
 }
 
-struct Graph* createGraph(int vertices) {
+// Function to create a graph with V vertices
+struct Graph* createGraph(int V) {
     struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
-    graph->vertices = vertices;
-    graph->adjacencyList = (struct Node**)malloc(vertices * sizeof(struct Node*));
+    graph->V = V;
 
-    for (int i = 0; i < vertices; i++) {
-        graph->adjacencyList[i] = NULL;
+    // Initialize all adjacency lists as empty
+    for (int i = 0; i < V; ++i) {
+        graph->array[i] = NULL;
     }
+
     return graph;
 }
-void addEdge(struct Graph* graph, int startVertex, int endVertex) {
-    if (startVertex >= 0 && startVertex < graph->vertices && endVertex >= 0 && endVertex < graph->vertices) {
-        struct Node* newNode = createNode(endVertex);
-        newNode->next = graph->adjacencyList[startVertex];
-        graph->adjacencyList[startVertex] = newNode;
 
-        newNode = createNode(startVertex);
-        newNode->next = graph->adjacencyList[endVertex];
-        graph->adjacencyList[endVertex] = newNode;
-    } else {
-        printf("Invalid vertices. Please provide valid vertex indices.\n");
-    }
-}
-void displayGraph(struct Graph* graph) {
-    printf("Adjacency List:\n");
-    for (int i = 0; i < graph->vertices; i++) {
-        struct Node* current = graph->adjacencyList[i];
-        printf("Vertex %d:", i);
-        while (current != NULL) {
-            printf(" -> %d", current->vertex);
-            current = current->next;
-        }
-        printf(" -> NULL\n");
-    }
+// Function to add an edge to the graph
+void addEdge(struct Graph* graph, int src, int dest) {
+    // Add an edge from src to dest. Since the graph is undirected,
+    // add an edge from dest to src also
+    struct Node* new_node = newNode(dest);
+    new_node->next = graph->array[src];
+    graph->array[src] = new_node;
+
+    new_node = newNode(src);
+    new_node->next = graph->array[dest];
+    graph->array[dest] = new_node;
 }
 
-void freeGraph(struct Graph* graph) {
-    for (int i = 0; i < graph->vertices; i++) {
-        struct Node* current = graph->adjacencyList[i];
-        while (current != NULL) {
-            struct Node* nextNode = current->next;
-            free(current);
-            current = nextNode;
+// Function to print the adjacency list representation of the graph
+void printGraph(struct Graph* graph) {
+    for (int v = 0; v < graph->V; ++v) {
+        struct Node* temp = graph->array[v];
+        printf("Vertex %d: ", v);
+        while (temp) {
+            printf("%d -> ", temp->data);
+            temp = temp->next;
         }
+        printf("\n");
     }
-    free(graph->adjacencyList);
-    free(graph);
 }
 
 int main() {
-    int vertices, edges;
-    printf("Enter the number of vertices in the graph: ");
-    scanf("%d", &vertices);
+    int V = 5;
+    struct Graph* graph = createGraph(V);
+    addEdge(graph, 0, 1);
+    addEdge(graph, 0, 4);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 1, 3);
+    addEdge(graph, 2, 3);
 
-    struct Graph* myGraph = createGraph(vertices);
-
-    printf("Enter the number of edges in the graph: ");
-    scanf("%d", &edges);
-
-    printf("Enter the edges (vertex pairs) in the graph:\n");
-    for (int i = 0; i < edges; i++) {
-        int startVertex, endVertex;
-        printf("Edge %d: ", i + 1);
-        scanf("%d %d", &startVertex, &endVertex);
-        addEdge(myGraph, startVertex, endVertex);
-    }
-
-    displayGraph(myGraph);
-
-    // Free the memory used by the graph
-    freeGraph(myGraph);
+    printGraph(graph);
 
     return 0;
 }
